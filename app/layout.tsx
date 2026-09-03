@@ -23,7 +23,7 @@ const mono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   title: "CV Evaluator",
   description:
-    "Local-first CV scoring against explainable hiring rubrics. Runs on your machine.",
+    "ResumeAgent CV scoring against explainable hiring rubrics.",
 };
 
 export default function RootLayout({

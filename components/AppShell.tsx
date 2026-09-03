@@ -80,7 +80,7 @@ export default function AppShell({
       <header className="relative z-10 mb-10 flex items-start justify-between gap-4">
         <div>
           <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-gold">
-            Local-first
+            ResumeAgent
           </p>
           <h1 className="mt-2 font-display text-2xl text-white md:text-3xl">
             CV Evaluator
