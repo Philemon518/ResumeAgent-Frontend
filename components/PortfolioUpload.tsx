@@ -62,7 +62,7 @@ export default function PortfolioUpload({ files, onChange }: PortfolioUploadProp
         <div className="relative z-10">
           <p className="font-display text-lg text-white">Drop portfolio files</p>
           <p className="mt-2 text-sm text-mist">
-            PDF, JPG, or PNG · up to {PORTFOLIO_MAX_FILES} files · 10 MB each.
+            PDF, JPG, or PNG · up to {PORTFOLIO_MAX_FILES} files · 5 MB each.
             Images are analysed with the vision model you pick next.
           </p>
         </div>

@@ -9,6 +9,19 @@ import { normalizeApiBase } from "./apiBase";
 
 export const API_BASE = normalizeApiBase(process.env.NEXT_PUBLIC_API_URL);
 
+async function errorFromResponse(res: Response, fallback: string): Promise<string> {
+  const text = await res.text();
+  try {
+    const body = JSON.parse(text) as { detail?: unknown };
+    if (typeof body.detail === "string" && body.detail.trim()) {
+      return body.detail;
+    }
+  } catch {
+    /* use text */
+  }
+  return text || `${res.status} ${res.statusText}` || fallback;
+}
+
 async function getJson<T>(path: string): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`, {
     headers: { Accept: "application/json" },
@@ -68,11 +81,8 @@ export async function downloadReportPdf(
     headers: { "Content-Type": "application/json", Accept: "application/pdf" },
     body: JSON.stringify(result),
   });
-  if (res.status === 429) {
-    throw new Error("The server is busy. Try again in a moment.");
-  }
   if (!res.ok) {
-    throw new Error((await res.text()) || `${res.status} ${res.statusText}`);
+    throw new Error(await errorFromResponse(res, `${res.status} ${res.statusText}`));
   }
   return res.blob();
 }
@@ -97,11 +107,10 @@ export async function evaluateStream(
     body: toForm(opts),
     signal,
   });
-  if (res.status === 429) {
-    throw new Error("The server is busy. Try again in a moment.");
-  }
   if (!res.ok || !res.body) {
-    throw new Error((await res.text()) || `${res.status} ${res.statusText}`);
+    throw new Error(
+      await errorFromResponse(res, "The server is busy. Try again in a moment."),
+    );
   }
 
   const reader = res.body.getReader();

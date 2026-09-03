@@ -1,5 +1,5 @@
-export const PORTFOLIO_MAX_FILES = 5;
-export const PORTFOLIO_MAX_BYTES = 10 * 1024 * 1024;
+export const PORTFOLIO_MAX_FILES = 4;
+export const PORTFOLIO_MAX_BYTES = 5 * 1024 * 1024;
 
 const PORTFOLIO_EXTENSIONS = [".pdf", ".jpg", ".jpeg", ".png"];
 
@@ -23,7 +23,7 @@ export function mergePortfolioFiles(
     if (file.size > PORTFOLIO_MAX_BYTES) {
       return {
         files: current,
-        error: `${file.name} exceeds the 10 MB limit.`,
+        error: `${file.name} exceeds the 5 MB limit.`,
       };
     }
     if (next.some((existing) => existing.name === file.name && existing.size === file.size)) {

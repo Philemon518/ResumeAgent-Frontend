@@ -15,6 +15,7 @@ export default function UploadStep({ value, onChange }: UploadStepProps) {
     (file: File | undefined | null) => {
       if (!file) return;
       if (!file.name.toLowerCase().endsWith(".pdf")) return;
+      if (file.size > 5 * 1024 * 1024) return;
       onChange(file);
     },
     [onChange],
@@ -69,7 +70,7 @@ export default function UploadStep({ value, onChange }: UploadStepProps) {
           <p className="mt-2 text-sm text-mist">
             {value
               ? `${(value.size / 1024).toFixed(0)} KB · click to replace`
-              : "or click to browse · PDF only"}
+              : "or click to browse · PDF only · 5 MB max"}
           </p>
         </div>
         <div className="pointer-events-none absolute -right-8 -top-8 h-40 w-40 rounded-full bg-gold/10 blur-3xl transition-opacity group-hover:opacity-100" />
