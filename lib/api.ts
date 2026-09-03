@@ -5,8 +5,9 @@ import type {
   RoleSummary,
 } from "./types";
 
-export const API_BASE =
-  process.env.NEXT_PUBLIC_API_URL ?? "/api";
+import { normalizeApiBase } from "./apiBase";
+
+export const API_BASE = normalizeApiBase(process.env.NEXT_PUBLIC_API_URL);
 
 async function getJson<T>(path: string): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`, {

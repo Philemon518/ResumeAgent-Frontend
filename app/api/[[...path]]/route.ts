@@ -1,12 +1,13 @@
 import { type NextRequest } from "next/server";
+import { normalizeApiBase } from "../../../lib/apiBase";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const maxDuration = 300;
 
-const UPSTREAM = (
-  process.env.API_INTERNAL_URL || "http://127.0.0.1:8000"
-).replace(/\/$/, "");
+const UPSTREAM = normalizeApiBase(
+  process.env.API_INTERNAL_URL || "http://127.0.0.1:8000",
+);
 
 async function proxy(
   request: NextRequest,

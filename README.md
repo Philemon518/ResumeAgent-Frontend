@@ -28,8 +28,9 @@ and this service proxies to the backend. That way the API origin is not
 hard-coded into the public JS bundle.
 
 If you must call the API from the browser directly, set `NEXT_PUBLIC_API_URL`
-to the public backend URL **and** set `CV_EVAL_CORS_ORIGINS` on the API to
-this frontend URL.
+to the public backend URL **with** `https://` (for example
+`https://resumeagent-backend-production.up.railway.app`) **and** set
+`CV_EVAL_CORS_ORIGINS` on the API to this frontend URL.
 
 ## Privacy
 
