@@ -5,8 +5,7 @@ export const DEPARTMENT_ORDER = [
   "Data & ML",
   "Product",
   "Design",
-  "Finance",
-  "Business",
+  "Economics",
   "Art",
   "General",
 ] as const;
