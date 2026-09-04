@@ -12,6 +12,7 @@ export type StageRef = {
  * never inflates it.
  */
 const PRIOR_SEC = {
+  queue: 0,
   parse_pdf: 4,
   extract: 22,
   github: 10,
@@ -20,6 +21,7 @@ const PRIOR_SEC = {
 } as const;
 
 export function priorFor(id: string): number {
+  if (id === "queue") return PRIOR_SEC.queue;
   if (id === "parse_pdf") return PRIOR_SEC.parse_pdf;
   if (id === "github") return PRIOR_SEC.github;
   if (id.startsWith("extract.")) return PRIOR_SEC.extract;
@@ -43,7 +45,8 @@ export function remainingSeconds(
   now: number,
 ): number {
   if (!stages.length) return 0;
-  const unfinished = stages.filter((stage) => !isFinished(stage.status));
+  const work = stages.filter((stage) => stage.id !== "queue");
+  const unfinished = work.filter((stage) => !isFinished(stage.status));
   if (!unfinished.length) return 0;
 
   let total = 0;
@@ -93,9 +96,14 @@ export function progressRatio(
   now: number,
 ): number {
   if (!stages.length) return 0.06;
+  if (stages.some((stage) => stage.id === "queue" && stage.status === "running")) {
+    return 0.06;
+  }
+  const work = stages.filter((stage) => stage.id !== "queue");
+  if (!work.length) return 0.06;
 
   let units = 0;
-  for (const stage of stages) {
+  for (const stage of work) {
     if (isFinished(stage.status)) {
       units += 1;
       continue;
@@ -107,5 +115,5 @@ export function progressRatio(
     units += prior <= 0 ? 1 : Math.min(1, elapsed / prior);
   }
 
-  return Math.min(0.99, Math.max(0.06, units / stages.length));
+  return Math.min(0.99, Math.max(0.06, units / work.length));
 }

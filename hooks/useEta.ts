@@ -31,6 +31,9 @@ export function useEta(stages: StageRef[], runId: number | null): EtaState {
   }, []);
 
   const running = stages.find((stage) => stage.status === "running");
+  if (running?.id === "queue") {
+    return { label: "Waiting in queue", percent: 6 };
+  }
   const percent = Math.round(
     progressRatio(stages, running?.startedAt ?? null, now) * 100,
   );

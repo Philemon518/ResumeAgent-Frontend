@@ -5,64 +5,22 @@ import HintTooltip from "./HintTooltip";
 import StepperRail from "./StepperRail";
 import type { WizardStep } from "../lib/wizard";
 
-export type ConnectionState = "connected" | "offline" | "connecting";
-
 interface AppShellProps {
   step: WizardStep;
-  connection: ConnectionState;
+  resumesEvaluated?: number | null;
   children: ReactNode;
   footer?: ReactNode;
   evaluating?: boolean;
 }
 
-function statusClass(connection: ConnectionState): string {
-  switch (connection) {
-    case "connected":
-      return "border-emerald-500/30 text-emerald-400";
-    case "offline":
-      return "border-rose-500/30 text-rose-300";
-    case "connecting":
-      return "border-white/15 text-mist";
-    default: {
-      const _never: never = connection;
-      return _never;
-    }
-  }
-}
-
-function dotClass(connection: ConnectionState): string {
-  switch (connection) {
-    case "connected":
-      return "bg-emerald-400";
-    case "offline":
-      return "bg-rose-400";
-    case "connecting":
-      return "animate-pulse bg-gold";
-    default: {
-      const _never: never = connection;
-      return _never;
-    }
-  }
-}
-
-function statusLabel(connection: ConnectionState): string {
-  switch (connection) {
-    case "connected":
-      return "API connected";
-    case "offline":
-      return "API offline";
-    case "connecting":
-      return "Connecting";
-    default: {
-      const _never: never = connection;
-      return _never;
-    }
-  }
+function formatCount(value: number | null | undefined): string {
+  if (value == null) return "—";
+  return value.toLocaleString("en-US");
 }
 
 export default function AppShell({
   step,
-  connection,
+  resumesEvaluated = null,
   children,
   footer,
   evaluating = false,
@@ -80,29 +38,25 @@ export default function AppShell({
       <header className="relative z-10 mb-10 flex items-start justify-between gap-4">
         <div>
           <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-gold">
-            ResumeAgent
+            Resume Agent
           </p>
           <h1 className="mt-2 font-display text-2xl text-white md:text-3xl">
             CV Evaluator
           </h1>
         </div>
         <div className="flex items-center gap-2">
-          <div
-            className={`flex items-center gap-2 rounded-full border px-3 py-1.5 font-mono text-[10px] uppercase tracking-[0.16em] ${statusClass(connection)}`}
-          >
-            <span className={`h-1.5 w-1.5 rounded-full ${dotClass(connection)}`} />
-            {statusLabel(connection)}
+          <div className="flex items-center gap-2 rounded-full border border-gold/40 px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.24em] text-gold">
+            Resumes Evaluated: {formatCount(resumesEvaluated)}
           </div>
           <HintTooltip
-            label="What API connected means"
+            label="Resumes Checked"
             align="right"
-            panelClassName="w-64"
+            panelClassName="w-72"
           >
-            <p className="text-xs font-medium text-white">FastAPI health check</p>
+            <p className="text-xs font-medium text-white">Resumes Checked</p>
             <p className="mt-2 text-[11px] leading-relaxed text-mist">
-              Green means the local backend answered. It is not whether the
-              OpenAI key on the backend is set — choose a model tier on step
-              03.
+              The amount of times users worldwide have used resumeagent.lol to
+              evaluate their resume.
             </p>
           </HintTooltip>
         </div>

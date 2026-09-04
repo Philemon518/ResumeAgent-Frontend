@@ -7,7 +7,9 @@ import {
   health,
   listModels,
   listRoles,
+  listStats,
 } from "../lib/api";
+import { reportFilename } from "../lib/reportName";
 import type {
   EvaluationResult,
   ModelsInfo,
@@ -53,6 +55,7 @@ export function useEvaluator() {
   const [roles, setRoles] = useState<RoleSummary[]>([]);
   const [models, setModels] = useState<ModelsInfo | null>(null);
   const [backendOk, setBackendOk] = useState<boolean | null>(null);
+  const [resumesEvaluated, setResumesEvaluated] = useState<number | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [portfolioFiles, setPortfolioFiles] = useState<File[]>([]);
   const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
@@ -72,15 +75,17 @@ export function useEvaluator() {
     (async () => {
       for (let i = 0; i < 8; i += 1) {
         try {
-          const [r, m] = await Promise.all([
+          const [r, m, s] = await Promise.all([
             listRoles(),
             listModels().catch(() => null),
+            listStats().catch(() => null),
           ]);
           await health().catch(() => null);
           if (!alive) return;
           setRoles(r);
           setBackendOk(true);
           if (m) setModels(m);
+          if (s) setResumesEvaluated(s.resumes_evaluated);
           return;
         } catch {
           if (!alive) return;
@@ -93,6 +98,21 @@ export function useEvaluator() {
       alive = false;
     };
   }, []);
+
+  useEffect(() => {
+    if (step !== "results") return;
+    let alive = true;
+    listStats()
+      .then((s) => {
+        if (alive) setResumesEvaluated(s.resumes_evaluated);
+      })
+      .catch(() => {
+        /* keep the last known count */
+      });
+    return () => {
+      alive = false;
+    };
+  }, [step]);
 
   const canAdvance = useMemo(() => {
     switch (step) {
@@ -134,7 +154,15 @@ export function useEvaluator() {
     setError("");
     setResult(null);
     setPartials([]);
-    setStages([]);
+    setStages([
+      {
+        id: "queue",
+        label: "Queue position",
+        status: "running",
+        detail: "Checking for an open slot…",
+        startedAt: Date.now(),
+      },
+    ]);
     setStartedAt(Date.now());
     setStep("run");
     try {
@@ -159,7 +187,15 @@ export function useEvaluator() {
         },
         controller.signal,
       );
-      if (final) setResult(final);
+      if (final) {
+        setResult(final);
+        try {
+          const s = await listStats();
+          setResumesEvaluated(s.resumes_evaluated);
+        } catch {
+          /* keep the last known count */
+        }
+      }
       setStatus("done");
       setStep("results");
     } catch (e) {
@@ -175,15 +211,16 @@ export function useEvaluator() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `cv-eval-${(result.candidate_name || "candidate").replace(/[^a-z0-9]+/gi, "_")}.pdf`;
+    a.download = reportFilename(result, roles);
     a.click();
     URL.revokeObjectURL(url);
-  }, [result]);
+  }, [result, roles]);
 
   return {
     roles,
     models,
     backendOk,
+    resumesEvaluated,
     file,
     setFile,
     portfolioFiles,

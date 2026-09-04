@@ -5,6 +5,7 @@ import AppShell from "../../components/AppShell";
 import ResultsStep from "../../components/steps/ResultsStep";
 import { downloadReportPdf } from "../../lib/api";
 import { DEMO_RESULT } from "../../lib/demo";
+import { reportFilename } from "../../lib/reportName";
 
 /**
  * Static showcase of the results view with fictional data. Used for
@@ -16,7 +17,7 @@ export default function DemoPage() {
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "cv-eval-Alex_Rivera.pdf";
+    a.download = reportFilename(DEMO_RESULT);
     a.click();
     URL.revokeObjectURL(url);
   }, []);
@@ -24,7 +25,7 @@ export default function DemoPage() {
   return (
     <AppShell
       step="results"
-      connection="connected"
+      resumesEvaluated={0}
       footer={
         <div className="mt-10 flex items-center justify-between gap-3">
           <span className="text-xs uppercase tracking-[0.18em] text-mist opacity-30">

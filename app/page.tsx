@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import AppShell, { type ConnectionState } from "../components/AppShell";
+import AppShell from "../components/AppShell";
 import ConfigureStep from "../components/steps/ConfigureStep";
 import ProgressStep from "../components/steps/ProgressStep";
 import ResultsStep from "../components/steps/ResultsStep";
@@ -85,12 +85,6 @@ function primaryAction(
   }
 }
 
-function connectionState(backendOk: boolean | null): ConnectionState {
-  if (backendOk === true) return "connected";
-  if (backendOk === false) return "offline";
-  return "connecting";
-}
-
 export default function Home() {
   const ev = useEvaluator();
 
@@ -127,7 +121,7 @@ export default function Home() {
   return (
     <AppShell
       step={ev.step}
-      connection={connectionState(ev.backendOk)}
+      resumesEvaluated={ev.resumesEvaluated}
       evaluating={ev.step === "run" && ev.status === "running"}
       footer={
         <div className="mt-10 flex items-center justify-between gap-3">

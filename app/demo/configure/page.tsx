@@ -12,7 +12,7 @@ export default function DemoConfigurePage() {
   return (
     <AppShell
       step="configure"
-      connection="connected"
+      resumesEvaluated={0}
       footer={
         <div className="mt-10 flex items-center justify-between gap-3">
           <span className="text-xs uppercase tracking-[0.18em] text-mist opacity-30">

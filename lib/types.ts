@@ -25,6 +25,7 @@ export interface RoleEvaluation {
   key_strengths: string[];
   areas_for_improvement: string[];
   conclusion: string;
+  department?: string;
   overall: number;
   max_final_score: number;
 }

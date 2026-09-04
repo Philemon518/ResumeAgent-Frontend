@@ -48,6 +48,10 @@ export function health(): Promise<{
   return getJson("/health");
 }
 
+export function listStats(): Promise<{ resumes_evaluated: number }> {
+  return getJson("/stats");
+}
+
 export interface EvaluateOptions {
   file: File;
   roles?: string[] | "all";
@@ -109,7 +113,7 @@ export async function evaluateStream(
   });
   if (!res.ok || !res.body) {
     throw new Error(
-      await errorFromResponse(res, "The server is busy. Try again in a moment."),
+      await errorFromResponse(res, "The queue is full. Try again in a moment."),
     );
   }
 

@@ -127,6 +127,7 @@ export const DEMO_RESULT: EvaluationResult = {
     {
       role: "senior_full_stack_engineer",
       position_title: "Senior / Full-Stack Software Engineer",
+      department: "Engineering",
       total_score: 78,
       total_max: 100,
       bonus_points: 8,
@@ -219,6 +220,7 @@ export const DEMO_RESULT: EvaluationResult = {
     {
       role: "backend_engineer",
       position_title: "Backend Engineer",
+      department: "Engineering",
       total_score: 72,
       total_max: 100,
       bonus_points: 5,

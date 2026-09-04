@@ -51,7 +51,11 @@ export default function ProgressStep({
           Evaluating
         </h2>
         <p className="mt-3 text-sm text-mist">
-          {current ? current.label : eta.label}
+          {current?.id === "queue"
+            ? current.detail || current.label
+            : current
+              ? current.label
+              : eta.label}
         </p>
       </div>
 
