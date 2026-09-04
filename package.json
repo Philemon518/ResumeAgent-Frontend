@@ -2,7 +2,7 @@
   "name": "cv-evaluator-frontend",
   "version": "0.1.0",
   "private": true,
-  "description": "Web UI for the CV Evaluator — upload a CV, pick a rubric, get an explainable score.",
+  "description": "Web UI for Resume Evaluator for specific Careers — upload a resume, pick a rubric, get an explainable score.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

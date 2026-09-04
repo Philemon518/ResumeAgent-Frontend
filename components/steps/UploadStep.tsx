@@ -28,12 +28,12 @@ export default function UploadStep({ value, onChange }: UploadStepProps) {
           Step 01
         </p>
         <h2 className="mt-2 font-display text-3xl text-white md:text-4xl">
-          Upload a CV
+          Upload a Resume
         </h2>
         <p className="mt-3 max-w-lg text-sm leading-relaxed text-mist">
           PDF only. The pipeline extracts a structured resume, optionally
-          enriches public GitHub signals, then scores against the rubrics you
-          select.
+          enriches public GitHub signals, and Portfolio Contents, then scores
+          against the rubrics you select.
         </p>
       </div>
 

@@ -21,9 +21,9 @@ const mono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CV Evaluator",
+  title: "Resume Evaluator for specific Careers",
   description:
-    "ResumeAgent CV scoring against explainable hiring rubrics.",
+    "Resume Agent scoring against explainable hiring rubrics.",
 };
 
 export default function RootLayout({

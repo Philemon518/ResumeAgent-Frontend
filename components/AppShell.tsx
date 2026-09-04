@@ -41,7 +41,7 @@ export default function AppShell({
             Resume Agent
           </p>
           <h1 className="mt-2 font-display text-2xl text-white md:text-3xl">
-            CV Evaluator
+            Resume Evaluator for specific Careers
           </h1>
         </div>
         <div className="flex items-center gap-2">

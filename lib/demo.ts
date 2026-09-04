@@ -110,6 +110,13 @@ export const DEMO_ROLES: RoleSummary[] = [
     4,
     "Museum curator intern: collections research, exhibitions, and professional museum practice.",
   ),
+  demoRole(
+    "investment_banking_intern",
+    "Investment Banking Intern",
+    "Finance",
+    4,
+    "Investment banking intern: finance preparation, commercial judgment, relevant experience, and execution.",
+  ),
 ];
 
 /**
