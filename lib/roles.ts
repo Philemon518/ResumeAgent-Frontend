@@ -1,21 +1,16 @@
 import type { RoleSummary } from "./types";
 
 export const DEPARTMENT_ORDER = [
-  "Engineering",
+  "Art",
   "Data & ML",
-  "Product",
   "Design",
   "Economics",
-  "Art",
+  "Engineering",
   "General",
+  "Product",
 ] as const;
 
 export type Department = (typeof DEPARTMENT_ORDER)[number];
-
-export function departmentRank(department: string): number {
-  const index = DEPARTMENT_ORDER.indexOf(department as Department);
-  return index === -1 ? DEPARTMENT_ORDER.length : index;
-}
 
 export interface RoleGroup {
   department: string;
@@ -31,11 +26,13 @@ export function groupRolesByDepartment(roles: RoleSummary[]): RoleGroup[] {
     else buckets.set(department, [role]);
   }
   return [...buckets.entries()]
-    .sort(([a], [b]) => departmentRank(a) - departmentRank(b))
+    .sort(([a], [b]) => a.localeCompare(b, "en", { sensitivity: "base" }))
     .map(([department, grouped]) => ({
       department,
       roles: [...grouped].sort((a, b) =>
-        a.position_title.localeCompare(b.position_title),
+        a.position_title.localeCompare(b.position_title, "en", {
+          sensitivity: "base",
+        }),
       ),
     }));
 }
