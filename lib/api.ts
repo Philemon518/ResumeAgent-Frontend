@@ -24,6 +24,7 @@ async function errorFromResponse(res: Response, fallback: string): Promise<strin
 
 async function getJson<T>(path: string): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`, {
+    cache: "no-store",
     headers: { Accept: "application/json" },
   });
   if (!res.ok) {

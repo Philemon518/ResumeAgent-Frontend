@@ -10,6 +10,11 @@ import {
   listStats,
 } from "../lib/api";
 import { reportFilename } from "../lib/reportName";
+import {
+  mergeEvalCount,
+  readStoredEvalCount,
+  writeStoredEvalCount,
+} from "../lib/evalCount";
 import type {
   EvaluationResult,
   ModelsInfo,
@@ -70,6 +75,20 @@ export function useEvaluator() {
   const [startedAt, setStartedAt] = useState<number | null>(null);
   const abortRef = useRef<AbortController | null>(null);
 
+  const adoptCount = useCallback((incoming: number | null | undefined) => {
+    if (incoming == null || !Number.isFinite(incoming)) return;
+    setResumesEvaluated((previous) => {
+      const next = mergeEvalCount(previous, incoming);
+      if (next != null) writeStoredEvalCount(next);
+      return next;
+    });
+  }, []);
+
+  useEffect(() => {
+    const stored = readStoredEvalCount();
+    if (stored != null) adoptCount(stored);
+  }, [adoptCount]);
+
   useEffect(() => {
     let alive = true;
     (async () => {
@@ -85,7 +104,7 @@ export function useEvaluator() {
           setRoles(r);
           setBackendOk(true);
           if (m) setModels(m);
-          if (s) setResumesEvaluated(s.resumes_evaluated);
+          if (s) adoptCount(s.resumes_evaluated);
           return;
         } catch {
           if (!alive) return;
@@ -97,14 +116,14 @@ export function useEvaluator() {
     return () => {
       alive = false;
     };
-  }, []);
+  }, [adoptCount]);
 
   useEffect(() => {
     if (step !== "results") return;
     let alive = true;
     listStats()
       .then((s) => {
-        if (alive) setResumesEvaluated(s.resumes_evaluated);
+        if (alive) adoptCount(s.resumes_evaluated);
       })
       .catch(() => {
         /* keep the last known count */
@@ -112,7 +131,7 @@ export function useEvaluator() {
     return () => {
       alive = false;
     };
-  }, [step]);
+  }, [step, adoptCount]);
 
   const canAdvance = useMemo(() => {
     switch (step) {
@@ -191,9 +210,19 @@ export function useEvaluator() {
         setResult(final);
         try {
           const s = await listStats();
-          setResumesEvaluated(s.resumes_evaluated);
+          setResumesEvaluated((previous) => {
+            const baseline = previous ?? 0;
+            const next =
+              s.resumes_evaluated > baseline ? s.resumes_evaluated : baseline + 1;
+            writeStoredEvalCount(next);
+            return next;
+          });
         } catch {
-          /* keep the last known count */
+          setResumesEvaluated((previous) => {
+            const next = (previous ?? 0) + 1;
+            writeStoredEvalCount(next);
+            return next;
+          });
         }
       }
       setStatus("done");

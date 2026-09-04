@@ -69,6 +69,13 @@ export const DEMO_ROLES: RoleSummary[] = [
     "Team leadership, delivery, hiring, and technical judgment for engineering managers.",
   ),
   demoRole(
+    "automotive_engineer_intern",
+    "Automotive Engineer Intern",
+    "Engineering",
+    4,
+    "Automotive intern: vehicle design and analysis, testing and validation, manufacturing, and engineering tools.",
+  ),
+  demoRole(
     "machine_learning_engineer",
     "Machine Learning Engineer",
     "Data & ML",

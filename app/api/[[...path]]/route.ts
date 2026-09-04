@@ -21,6 +21,7 @@ async function proxy(
     method: request.method,
     headers,
     redirect: "manual",
+    cache: "no-store",
   };
   if (request.method !== "GET" && request.method !== "HEAD") {
     init.body = request.body;
@@ -30,6 +31,9 @@ async function proxy(
   const upstream = await fetch(target, init);
   const out = new Headers(upstream.headers);
   out.delete("content-encoding");
+  if (request.method === "GET" || request.method === "HEAD") {
+    out.set("Cache-Control", "no-store, no-cache, must-revalidate");
+  }
   return new Response(upstream.body, {
     status: upstream.status,
     statusText: upstream.statusText,
