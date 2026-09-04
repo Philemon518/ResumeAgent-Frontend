@@ -117,6 +117,13 @@ export const DEMO_ROLES: RoleSummary[] = [
     4,
     "Investment banking intern: finance preparation, commercial judgment, relevant experience, and execution.",
   ),
+  demoRole(
+    "consultant_intern",
+    "Consultant Intern",
+    "Business",
+    4,
+    "Consultant intern: problem solving, business judgment, leadership, and client-ready execution.",
+  ),
 ];
 
 /**
