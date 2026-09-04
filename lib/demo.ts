@@ -152,6 +152,13 @@ export const DEMO_ROLES: RoleSummary[] = [
     4,
     "Legislative intern: policy research, writing, legislative process, and office execution.",
   ),
+  demoRole(
+    "policy_analyst_intern",
+    "Policy Analyst Intern",
+    "Politics",
+    4,
+    "Policy analyst intern: research and analysis, methods, writing, and implementation.",
+  ),
 ];
 
 /**
