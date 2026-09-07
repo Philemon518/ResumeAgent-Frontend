@@ -76,6 +76,13 @@ export const DEMO_ROLES: RoleSummary[] = [
     "Automotive intern: vehicle design and analysis, testing and validation, manufacturing, and engineering tools.",
   ),
   demoRole(
+    "ai_engineer_intern",
+    "AI Engineer Intern",
+    "Engineering",
+    4,
+    "AI intern: modeling, applied systems, MLOps, and evaluation.",
+  ),
+  demoRole(
     "machine_learning_engineer",
     "Machine Learning Engineer",
     "Data & ML",
