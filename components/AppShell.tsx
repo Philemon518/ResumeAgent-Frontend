@@ -35,7 +35,7 @@ export default function AppShell({
         <div className={`orb orb-teal ${evaluating ? "is-active" : ""}`} />
       </div>
 
-      <header className="relative z-10 mb-10 flex flex-col gap-4 md:flex-row md:items-start md:justify-between md:gap-4">
+      <header className="relative z-30 mb-10 flex flex-col gap-4 md:flex-row md:items-start md:justify-between md:gap-4">
         <div className="min-w-0 flex-1">
           <p className="font-mono text-[11px] uppercase tracking-[0.24em] text-gold">
             Resume Agent
@@ -44,14 +44,15 @@ export default function AppShell({
             Resume Evaluator for specific Careers
           </h1>
         </div>
-        <div className="flex shrink-0 items-center gap-1.5 self-start md:gap-2">
+        <div className="relative flex shrink-0 items-center gap-1.5 self-start md:gap-2">
           <div className="flex min-w-[13.5rem] items-center justify-center whitespace-nowrap rounded-full border border-gold/40 px-5 py-2 font-mono text-[9px] uppercase tracking-[0.14em] text-gold md:min-w-0 md:px-3 md:py-1.5 md:text-[11px] md:tracking-[0.24em]">
             Resumes Evaluated: {formatCount(resumesEvaluated)}
           </div>
           <HintTooltip
             label="Resumes Checked"
-            align="right"
-            panelClassName="w-72"
+            align="left"
+            hoistPanel
+            panelClassName="w-[min(18rem,calc(100vw-2rem))] md:left-auto md:right-0 md:w-72"
           >
             <p className="text-xs font-medium text-white">Resumes Checked</p>
             <p className="mt-2 text-[11px] leading-relaxed text-mist">
